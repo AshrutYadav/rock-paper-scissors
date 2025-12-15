@@ -44,7 +44,9 @@ function rounds() {
     }
     if (humanscore>computerscore) {
             prompt(`You Won !\nYour Score = ${humanscore}/5`);
-        } else prompt("You Lose");
+        } else if (humanscore==computerscore) {
+            prompt("Tie");
+        } else prompt("You Lose !");
 }
 
 rounds()
