@@ -1,54 +1,113 @@
-let humanscore = 0;
-let computerscore = 0;
-let compchoice = null;
+const resultText = document.getElementById("resultText");
 
-function humanchoice(i) {
-    
-    let value = prompt(`Round ${i}\nEnter Your Choice (1-3) :\n1) Rock \n2) Paper\n3) Scissor`);
-    let humaninput = (value==1) ? "1" : (value==2) ? "2" : "3";
-    let humanstr = (value==1) ? "Rock" : (value==2) ? "Paper" : "Scissor";
+const buttons = document.querySelectorAll(".btn")
+const roundDisplay = document.getElementById("roundDisplay");
+const playerScoreEl = document.getElementById("playerScore");
+const computerScoreEl = document.getElementById("computerScore");
 
-    compchoice = computerchoice();
+const playerChoiceText = document.getElementById("playerChoiceText");
+const computerChoiceText = document.getElementById("computerChoiceText");
 
-    let compstr = (compchoice==1) ? "Rock" : (compchoice==2) ? "Paper" : "Scissor";
+const MAX_ROUNDS = 10;
 
-    if ((humaninput == 1 && compchoice == 3) || (humaninput == 2 && compchoice == 1) || (humaninput == 3 && compchoice == 2)) {
-        humanscore += 1;
-        prompt(`Your choice = ${humanstr}\nComputer choice = ${compstr}\nYour Score = ${humanscore}/5\nComputer Score = ${computerscore}/5\nPress any key to continue...`);
+
+let round = 1;
+let playerChoice = null;
+let computerChoice = null;
+let playerScore = 0;
+let computerScore = 0;
+let roundPlayed = false;
+
+
+buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+
+        if (btn.id === "nxtround") {
+            startNextRound();
+            return;
+        }
+
+        if (roundPlayed) return;
+
+        playerChoice = Number(btn.dataset.choice)
+        computerChoice = getComputerChoice()
+
+        roundPlayed = true
+
+        playerChoiceText.innerText = choiceToText(playerChoice);
+        computerChoiceText.innerText = choiceToText(computerChoice);
+
+
+        decideWinner(playerChoice, computerChoice)
+    })
+})
+
+
+function startNextRound() {
+    if (!roundPlayed) return;
+
+    // GAME OVER CHECK
+    if (round === MAX_ROUNDS) {
+        declareFinalWinner();
+        return;
     }
 
-    else if ((compchoice == 1 && humaninput == 3) || (compchoice == 2 && humaninput == 1) || (compchoice == 3 && humaninput == 2)) {
-        computerscore += 1;
-        prompt(`Your choice = ${humanstr}\nComputer choice = ${compstr}\nYour Score = ${humanscore}/5\nComputer Score = ${computerscore}/5\nPress any key to continue...`);
+    // reset choices UI
+    playerChoiceText.innerText = "-";
+    computerChoiceText.innerText = "-";
+
+    round++;
+    roundPlayed = false;
+
+    playerChoice = null;
+    computerChoice = null;
+
+    roundDisplay.innerText = `Round ${round}`;
+}
+
+
+function getComputerChoice() {
+    return Math.floor(Math.random() * 3) + 1
+}
+
+
+function decideWinner(player, computer) {
+
+    if (player === computer) return;
+
+    if (
+        (player === 1 && computer === 3) ||
+        (player === 2 && computer === 1) ||
+        (player === 3 && computer === 2)
+    ) {
+        playerScore++;
+        playerScoreEl.innerText = playerScore;
     }
+
     else {
-        prompt(`Both Chose ${humanstr}\nPress any key to continue...`);
-        
+        computerScore++;
+        computerScoreEl.innerText = computerScore;
+    }
+}
+
+
+function choiceToText(choice) {
+    if (choice === 1) return "ROCK";
+    if (choice === 2) return "PAPER";
+    if (choice === 3) return "SCISSOR";
+}
+
+function declareFinalWinner() {
+    if (playerScore > computerScore) {
+        resultText.innerText = "🎉 You Win the Game!";
+    } 
+    else if (computerScore > playerScore) {
+        resultText.innerText = "💻 Computer Wins the Game!";
+    } 
+    else {
+        resultText.innerText = "🤝 It's a Tie!";
     }
 
-    
-
-
+    roundPlayed = true;
 }
-
-function computerchoice() {
-    let value = Math.floor(Math.random() * 3  + 1);
-    let result = (value==1) ? "1" : (value==2) ? "2" : "3"; // 1)Rock   2)Paper   3)Scissor
-    return result;
-}
-
-function rounds() {
-    for (let i=1; i<=10; i++) {
-        humanchoice(i);
-        
-    }
-    if (humanscore>computerscore) {
-            prompt(`You Won !\nYour Score = ${humanscore}/5`);
-        } else if (humanscore==computerscore) {
-            prompt("Tie");
-        } else prompt("You Lose !");
-}
-
-rounds()
-
 

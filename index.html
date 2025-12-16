@@ -1,13 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPS Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <h2 id="roundDisplay">Round 1</h2>
+
+    <div>
+        <button class="btn" data-choice="1">ROCK</button>
+        <button class="btn" data-choice="2">PAPER</button>
+        <button class="btn" data-choice="3">SCISSOR</button>
+
+        <button class="btn" id="nxtround">PLAY NEXT ROUND</button>
+    </div>
+
+
+    <div class="score">
+        <div>
+            <div>
+                Your Score : <span id="playerScore">0</span>/10
+            </div>
+
+            <div>
+                Computer Score : <span id="computerScore">0</span>/10
+            </div>
+        </div>
+    </div>
     
+
+    <div class="scorelst" id="choices">
+        <div>
+            <div>
+                Your Choice: <span id="playerChoiceText">-</span>
+            </div>
+
+            <div>
+                Computer Choice: <span id="computerChoiceText">-</span>
+            </div>
+        </div>
+
+    </div>
+
+    <h2 id="resultText"></h2>
+
+
+
     <script src="script.js"></script>
-    
+
 </body>
+
 </html>
